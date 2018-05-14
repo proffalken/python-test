@@ -18,7 +18,7 @@ pipeline {
           HELM_RELEASE = "$PREVIEW_NAMESPACE".toLowerCase()
         }
         steps {
-          container('python') {
+          container('jenkinsxio/builder-python') {
             sh "npm install"
             sh "npm test"
 
@@ -29,7 +29,7 @@ pipeline {
           }
 
           dir ('./charts/preview') {
-           container('python') {
+           container('jenkinsxio/builder-python') {
              sh "make preview"
              sh "jx preview --app $APP_NAME --dir ../.."
            }
@@ -41,7 +41,7 @@ pipeline {
           branch 'master'
         }
         steps {
-          container('python') {
+          container('jenkinsxio/builder-python') {
             // ensure we're not on a detached head
             sh "git checkout master"
             sh "git config --global credential.helper store"
@@ -51,11 +51,11 @@ pipeline {
             sh "echo \$(jx-release-version) > VERSION"
           }
           dir ('./charts/python-test') {
-            container('python') {
+            container('jenkinsxio/builder-python') {
               sh "make tag"
             }
           }
-          container('python') {
+          container('jenkinsxio/builder-python') {
             sh "npm install"
             sh "npm test"
 
@@ -71,7 +71,7 @@ pipeline {
         }
         steps {
           dir ('./charts/python-test') {
-            container('python') {
+            container('jenkinsxio/builder-python') {
               sh 'jx step changelog --version v\$(cat ../../VERSION)'
 
               // release the helm chart
