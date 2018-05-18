@@ -29,7 +29,7 @@ pipeline {
           }
 
           dir ('./charts/preview') {
-           container('jenkinsxio/builder-python') {
+           container('python') {
              sh "make preview"
              sh "jx preview --app $APP_NAME --dir ../.."
            }
