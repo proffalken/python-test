@@ -51,11 +51,11 @@ pipeline {
             sh "echo \$(jx-release-version) > VERSION"
           }
           dir ('./charts/python-test') {
-            container('jenkinsxio/builder-python') {
+            container('python') {
               sh "make tag"
             }
           }
-          container('jenkinsxio/builder-python') {
+          container('python') {
             sh "npm install"
             sh "npm test"
 
